@@ -29,7 +29,7 @@ class Shortener::ShortenedUrl < ActiveRecord::Base
     # so check the datastore
     cleaned_url = clean_url(orig_url)
     scope = owner ? owner.shortened_urls : self
-    scope.find_or_create_by_url(cleaned_url)
+    scope.find_or_create_by(url: cleaned_url)
   end
 
   # return shortened url on success, nil on failure
