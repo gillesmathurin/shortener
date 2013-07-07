@@ -3,7 +3,7 @@ class Shortener::ShortenedUrl < ActiveRecord::Base
   URL_PROTOCOL_HTTP = "http://"
   REGEX_LINK_HAS_PROTOCOL = Regexp.new('\Ahttp:\/\/|\Ahttps:\/\/', Regexp::IGNORECASE)
 
-  attr_accessible :url
+  attr_accessible :url, :unique_key
 
   validates :url, :presence => true
 
@@ -43,6 +43,14 @@ class Shortener::ShortenedUrl < ActiveRecord::Base
     end
   end
 
+    # generate a random string
+  # future mod to allow specifying a more expansive charst, like utf-8 chinese
+  def generate_unique_key
+    # not doing uppercase as url is case insensitive
+    charset = ::Shortener.key_chars
+    (0...::Shortener.unique_key_length).map{ charset[rand(charset.size)] }.join
+  end
+
   private
 
   # we'll rely on the DB to make sure the unique key is really unique.
@@ -62,14 +70,6 @@ class Shortener::ShortenedUrl < ActiveRecord::Base
         raise
       end
     end
-  end
-
-  # generate a random string
-  # future mod to allow specifying a more expansive charst, like utf-8 chinese
-  def generate_unique_key
-    # not doing uppercase as url is case insensitive
-    charset = ::Shortener.key_chars
-    (0...::Shortener.unique_key_length).map{ charset[rand(charset.size)] }.join
   end
 
 end
