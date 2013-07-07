@@ -51,7 +51,7 @@ class Shortener::ShortenedUrl < ActiveRecord::Base
     count = 0
     begin
       self.unique_key = generate_unique_key
-      logger.info self.unique_key
+      logger.info "the unique_key is: #{self.unique_key}"
       super
     rescue ActiveRecord::RecordNotUnique, ActiveRecord::StatementInvalid => err
       if (count +=1) < 5
