@@ -35,6 +35,8 @@ class Shortener::ShortenedUrl < ActiveRecord::Base
     record = scope.find_by(url: cleaned_url)
     unless record
       scope.create(url: cleaned_url, unique_key: generate_unique_key)
+    else
+      record
     end
   end
 
